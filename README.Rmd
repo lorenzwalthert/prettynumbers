@@ -1,0 +1,67 @@
+---
+output: github_document
+---
+
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# prettynumbers
+
+The goal of prettynumbers is to provide a pretty print method for (large)
+numbers, primarily for the type vector . Before a more extended autoprint is
+implemented in base R, we need to call `print` explicitly, but hopefully this
+will be [resolved until R
+3.6](https://twitter.com/_lionelhenry/status/1014078544086003712).
+
+## Installation
+
+You can install the development version from GitHub.
+
+```{r, eval = FALSE}
+devtools::install_github("lorenzwalthert/prettynumbers") 
+```
+
+## Example
+
+
+```{r example}
+set.seed(4)
+library(prettynumbers)
+numbers <- c(1, 23, 1023.30, 38929381, runif(10, 0, 1e6))
+numbers
+```
+
+Note that because of autoprint for interactive usage is not implemented as 
+stated above, you need to call `print()` explicitly on the object, e.g:
+
+```{r}
+print(numbers, delim = ",", digits_after_decimal = 2)
+```
+
+And see how this compares to the default printing method:
+```{r}
+set.seed(4)
+c(1, 23, 1023.30, 38929381, runif(10, 0, 1e6)) %>% print.default()
+```
+
+
+## Features
+
+Compared the default interger and numberic printing method, this package offers. 
+
+* Allign numbers by decimal point.
+* Print only one number per row to reduce distortion.
+* Add delimiters such as `'`. 
+* Show rounded output in semi-verbatin for easier visual digestion.
+* limit number of printed elements.
+

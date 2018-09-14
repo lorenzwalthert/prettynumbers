@@ -36,7 +36,7 @@ return_numbers <- function(x, delim = "'", digits_after_decimal = "auto",
       tabular$index, " ", tabular$exact, ifelse(tabular$rounded == "", "", " "),
       tabular$rounded
     ),
-    if (length(x) > max_length) paste("# And", length(x) - max_length, "more rows.")
+    if (length(x) > max_length) paste("# And", length(x) - max_length, "more elements.")
   )
 
   if (invisible) {
