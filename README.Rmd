@@ -42,7 +42,8 @@ numbers
 ```
 
 Note that because of autoprint for interactive usage is not implemented as 
-stated above, you need to call `print()` explicitly on the object, e.g:
+stated above, you need to call `print()` explicitly when used interactively, 
+e.g.
 
 ```{r}
 print(numbers, delim = ",", digits_after_decimal = 2)
