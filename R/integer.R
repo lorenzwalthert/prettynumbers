@@ -31,13 +31,19 @@ return_numbers <- function(x, delim = "'", digits_after_decimal = "auto",
   tabular$index <- fill_spaces(tabular$index, max_chars_per_col["index"], side = "trailing")
   length <- seq(1, min(length(x), max_length))
   tabular <- tabular[length, ]
-
-  .returner(c(
-    paste(tabular$index, tabular$exact, tabular$rounded),
+  return_value <- c(
+    paste0(
+      tabular$index, " ", tabular$exact, ifelse(tabular$rounded == "", "", " "),
+      tabular$rounded
+    ),
     if (length(x) > max_length) paste("# And", length(x) - max_length, "more rows.")
-  ), sep = "\n")
+  )
+
   if (invisible) {
+    .returner(return_value)
     invisible(x)
+  } else {
+    .returner(return_value)
   }
 }
 
@@ -91,8 +97,9 @@ add_block <- function(data, delim) {
     ))
 }
 
-bare_numbers <- purrr::partial(return_numbers, .returner = identity)
-cat_numbers <- purrr::partial(return_numbers, .returner = cat, .end = "\n")
+bare_numbers <- purrr::partial(return_numbers, .returner = identity, invisible = FALSE)
+cat_with_line_break <- function(...) cat(..., sep = "\n")
+cat_numbers <- purrr::partial(return_numbers, .returner = cat_with_line_break)
 print_numbers <- purrr::partial(return_numbers, .returner = print)
 
 #' Derive the rounded version of a number
@@ -127,7 +134,7 @@ elicit_rounded <- function(long_with_ticks, delim_positions) {
 #' Turn a number into a long tabular format
 as_long <- function(x) {
   tibble::tibble(
-    x= strsplit(as.character(formatC(x, format = "f")), "") %>%
+    x= strsplit(as.character(formatC(x, format = "f", digits = 324)), "") %>%
       unlist(),
     ind = rlang::seq2(1, length(.data$x)),
     is_after_decimal = cumsum(x == "."),
